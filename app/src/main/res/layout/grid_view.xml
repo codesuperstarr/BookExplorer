@@ -5,8 +5,8 @@
 
     <data>
         <variable
-            name="viewModel"
-            type="xyz.divineugorji.bookexplorer.home.HomeViewModel" />
+            name="property"
+            type="xyz.divineugorji.bookexplorer.network.BookProperty" />
     </data>
 
     <ImageView
@@ -16,6 +16,6 @@
         android:scaleType="centerCrop"
         android:adjustViewBounds="true"
         android:padding="2dp"
-        app:imageUrl="@{viewModel.property.imgSrcUrl}"
+        app:imageUrl="@{property.imgSrcUrl}"
         tools:src="@tools:sample/backgrounds/scenic"/>
 </layout>

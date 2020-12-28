@@ -12,20 +12,26 @@ import retrofit2.Callback
 import retrofit2.Response
 import xyz.divineugorji.bookexplorer.network.BookApi
 import xyz.divineugorji.bookexplorer.network.BookProperty
+enum class BookApiStatus{ERROR, LOADING, DONE}
 
 class HomeViewModel: ViewModel() {
 
     // The internal MutableLiveData String that stores the status of the most recent request
-    private val _status = MutableLiveData<String>()
+    private val _status = MutableLiveData<BookApiStatus>()
 
     // The external immutable LiveData for the request status String
-    val status: LiveData<String>
+    val status: LiveData<BookApiStatus>
         get() = _status
 
-    private val _property = MutableLiveData<BookProperty>()
+    private val _properties = MutableLiveData<List<BookProperty>>()
 
-    val property: LiveData<BookProperty>
-    get() = _property
+    val properties: LiveData<List<BookProperty>>
+        get() = _properties
+
+    private val _navigateToSelectedProperty = MutableLiveData<BookProperty>()
+
+    val navigateToSelectedProperty: LiveData<BookProperty>
+        get() = _navigateToSelectedProperty
 
     //Craete a Coroutine scope for the
     private var viewModelJob = Job()
@@ -43,20 +49,32 @@ class HomeViewModel: ViewModel() {
         coroutineScope.launch {
             var getPropertiesDeferred = BookApi.retrofitService.getProperties()
 
+            _status.value = BookApiStatus.LOADING
             try {
-                var listResult = getPropertiesDeferred.await()
-                if (listResult.size > 0){
-                    _property.value = listResult[0]
-                }
+                // this will run on a thread managed by Retrofit
+                val listResult = getPropertiesDeferred.await()
+
+                _status.value = BookApiStatus.DONE
+                _properties.value = listResult
+
+                
             } catch (e: Exception) {
-                _status.value = "Failure: ${e.message}"
+                _status.value = BookApiStatus.ERROR
+                _properties.value = ArrayList()
             }
         }
-
     }
 
     override fun onCleared() {
         super.onCleared()
         viewModelJob.cancel()
+    }
+
+    fun displayPropertyDetails(marsProperty: BookProperty) {
+        _navigateToSelectedProperty.value = marsProperty
+    }
+
+    fun displayPropertyDetailsComplete() {
+        _navigateToSelectedProperty.value = null
     }
 }

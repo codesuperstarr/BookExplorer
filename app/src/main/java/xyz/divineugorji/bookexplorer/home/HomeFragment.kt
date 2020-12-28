@@ -14,12 +14,11 @@ import xyz.divineugorji.bookexplorer.databinding.GridViewBinding
 
 class HomeFragment : Fragment() {
 
-    private lateinit var binding: GridViewBinding
+    private lateinit var binding: FragmentHomeBinding
 
     private val viewModel: HomeViewModel by lazy {
         ViewModelProvider(this).get(HomeViewModel::class.java)
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,14 +26,17 @@ class HomeFragment : Fragment() {
     ): View? {
 
         // Inflate the layout for this fragment
-         binding = GridViewBinding.inflate(inflater)
-
-        binding.lifecycleOwner = this
+         binding = FragmentHomeBinding.inflate(inflater)
 
         binding.viewModel = viewModel
 
-        return binding.root
+        // Allows Data Binding to Observe LiveData with the lifecycle of this Fragment
+        binding.lifecycleOwner = this
 
+        binding.photosGrid.adapter = HomeGridAdapter()
+
+
+        return binding.root
 
     }
 
