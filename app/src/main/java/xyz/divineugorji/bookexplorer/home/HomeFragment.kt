@@ -5,11 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import xyz.divineugorji.bookexplorer.R
+import androidx.navigation.fragment.findNavController
 import xyz.divineugorji.bookexplorer.databinding.FragmentHomeBinding
-import xyz.divineugorji.bookexplorer.databinding.GridViewBinding
 
 
 class HomeFragment : Fragment() {
@@ -33,11 +32,17 @@ class HomeFragment : Fragment() {
         // Allows Data Binding to Observe LiveData with the lifecycle of this Fragment
         binding.lifecycleOwner = this
 
-        binding.photosGrid.adapter = HomeGridAdapter()
 
+        binding.photosGrid.adapter = HomeGridAdapter(HomeGridAdapter.OnClickListener {
+            viewModel.displayPropertyDetails(it)
+        })
 
+        viewModel.navigateToSelectedProperty.observe(this, Observer {
+            if ( null != it ) {
+                this.findNavController().navigate(HomeFragmentDirections.actionShowDetail(it))
+                viewModel.displayPropertyDetailsComplete()
+            }
+        })
         return binding.root
-
     }
-
 }

@@ -70,8 +70,8 @@ class HomeViewModel: ViewModel() {
         viewModelJob.cancel()
     }
 
-    fun displayPropertyDetails(marsProperty: BookProperty) {
-        _navigateToSelectedProperty.value = marsProperty
+    fun displayPropertyDetails(bookProperty: BookProperty) {
+        _navigateToSelectedProperty.value = bookProperty
     }
 
     fun displayPropertyDetailsComplete() {

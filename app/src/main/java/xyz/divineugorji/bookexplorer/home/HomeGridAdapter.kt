@@ -9,11 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import xyz.divineugorji.bookexplorer.databinding.GridViewBinding
 import xyz.divineugorji.bookexplorer.network.BookProperty
 
-class HomeGridAdapter(val onClickListener: OnClickListener) : ListAdapter<BookProperty, HomeGridAdapter.BookPropertyViewHolder>(DiffCallback) {
+class HomeGridAdapter(private val onClickListener: OnClickListener) : ListAdapter<BookProperty, HomeGridAdapter.BookPropertyViewHolder>(DiffCallback) {
     class BookPropertyViewHolder(private var binding: GridViewBinding) :
             RecyclerView.ViewHolder(binding.root){
-        fun bind(marsProperty: BookProperty) {
-            binding.property = marsProperty
+        fun bind(bookProperty: BookProperty) {
+            binding.property = bookProperty
             binding.executePendingBindings()
         }
     }
@@ -33,16 +33,15 @@ class HomeGridAdapter(val onClickListener: OnClickListener) : ListAdapter<BookPr
     }
 
     override fun onBindViewHolder(holder: HomeGridAdapter.BookPropertyViewHolder, position: Int) {
-        val marsProperty = getItem(position)
-        holder.bind(marsProperty)
-
+        val bookProperty = getItem(position)
         holder.itemView.setOnClickListener {
-            onClickListener.onClick(marsProperty)
+            onClickListener.onClick(bookProperty)
         }
+        holder.bind(bookProperty)
     }
 
-    class OnClickListener(val clickListener: (marsProperty:BookProperty) -> Unit) {
-        fun onClick(marsProperty:BookProperty) = clickListener(marsProperty)
+    class OnClickListener(val clickListener: (bookProperty: BookProperty) -> Unit) {
+        fun onClick(bookProperty:BookProperty) = clickListener(bookProperty)
     }
 }
 

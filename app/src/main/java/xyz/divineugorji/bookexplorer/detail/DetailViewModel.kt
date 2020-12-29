@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import xyz.divineugorji.bookexplorer.network.BookProperty
 
-class DetailViewModel(bookProperty: BookProperty, app: Application) : AndroidViewModel(app) {
+class DetailViewModel(bookProperty: BookProperty, application: Application) : AndroidViewModel(application) {
 
 
     private val _selectedProperty = MutableLiveData<BookProperty>()
