@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import xyz.divineugorji.bookexplorer.databinding.FragmentHomeBinding
 
@@ -25,7 +26,7 @@ class HomeFragment : Fragment() {
     ): View? {
 
         // Inflate the layout for this fragment
-         binding = FragmentHomeBinding.inflate(inflater)
+        binding = FragmentHomeBinding.inflate(inflater)
 
         binding.viewModel = viewModel
 
@@ -38,8 +39,10 @@ class HomeFragment : Fragment() {
         })
 
         viewModel.navigateToSelectedProperty.observe(viewLifecycleOwner, Observer {
-            if ( null != it ) {
-                this.findNavController().navigate(HomeFragmentDirections.actionShowDetail(it))
+            if (null != it) {
+
+                requireView().findNavController()
+                    .navigate(HomeFragmentDirections.actionHomeFragmentToDetailFragment(it))
                 viewModel.displayPropertyDetailsComplete()
             }
         })
