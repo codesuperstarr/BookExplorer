@@ -37,7 +37,7 @@ class HomeFragment : Fragment() {
             viewModel.displayPropertyDetails(it)
         })
 
-        viewModel.navigateToSelectedProperty.observe(this, Observer {
+        viewModel.navigateToSelectedProperty.observe(viewLifecycleOwner, Observer {
             if ( null != it ) {
                 this.findNavController().navigate(HomeFragmentDirections.actionShowDetail(it))
                 viewModel.displayPropertyDetailsComplete()
